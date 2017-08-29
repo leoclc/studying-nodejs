@@ -13,7 +13,7 @@ module.exports = function(app){
 	app.get('/produtos/remove',function(){
 		var connection = app.infra.connectionFactory();
 		var produto = productDB.load(id,callback);
-		var productsDB = app.infra.productsDB(connection);
+		var productsDB = new app.infra.productsDB(connection);
 		if(produto){
 			productDB.remove(pruduto,callback);
 		}
