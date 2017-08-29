@@ -2,11 +2,25 @@
 module.exports = function(app){
 	app.get('/produtos',function(req,res){
 		var connection = app.infra.connectionFactory();
-		connection.query("select * from produtos",function(err,result){
+		var productsDB = app.infra.productsDB(connection);
+		productsDB.list(function(err,result){
 			res.render('lista',{lista : result});
 		});
 		connection.end();
 		
+	});	
+
+	app.get('/produtos/remove',function(){
+		var connection = app.infra.connectionFactory();
+		var produto = productDB.load(id,callback);
+		var productsDB = app.infra.productsDB(connection);
+		if(produto){
+			productDB.remove(pruduto,callback);
+		}
+		productsDB.list(function(err,result){
+			res.render('lista',{lista : result});
+		});
+		connection.end();
 	});	
 }
 
