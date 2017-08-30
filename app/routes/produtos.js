@@ -2,7 +2,7 @@
 module.exports = function(app){
 	app.get('/produtos',function(req,res){
 		var connection = app.infra.connectionFactory();
-		var productsDB = app.infra.productsDB(connection);
+		var productsDB = new app.infra.productsDB(connection);
 		productsDB.list(function(err,result){
 			res.render('lista',{lista : result});
 		});
