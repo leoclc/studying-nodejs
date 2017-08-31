@@ -4,13 +4,42 @@ module.exports = function(app){
 		var connection = app.infra.connectionFactory();
 		var productsDAO = new app.infra.ProductDAO(connection);
 		productsDAO.list(function(err,result){
-			res.render('lista',{lista : result});
+			res.format({
+				html : function(){
+					res.render('list',{lista : result});
+				},
+				json : function(){
+					res.json(result);
+				}
+			});
 		});
 		connection.end();
 		
 	});	
 
-	app.get('/produtos/remove',function(){
+	app.get('/produtos/json',function(req,res){
+		var connection = app.infra.connectionFactory();
+		var productsDAO = new app.infra.ProductDAO(connection);
+		productsDAO.list(function(err,result){
+			res.json(result);
+		});
+		connection.end();
+	});	
+
+	app.get('/form',function(req,res){
+		res.render('form');		
+	});	
+
+	app.post('/products',function(req,res){
+		var product = req.body;
+		var connection = app.infra.connectionFactory();
+		var productsDAO = new app.infra.ProductDAO(connection);
+		productsDAO.save(product,function(err,result){
+			res.redirect('/produtos');
+		});
+	});	
+
+	app.get('/products/remove',function(){
 		var connection = app.infra.connectionFactory();
 		var produto = productsDAO.load(id,callback);
 		var productsDAO = new app.infra.ProductDAO(connection);
@@ -18,7 +47,7 @@ module.exports = function(app){
 			productsDAO.remove(pruduto,callback);
 		}
 		productsDAO.list(function(err,result){
-			res.render('lista',{lista : result});
+			res.render('list',{lista : result});
 		});
 		connection.end();
 	});	
